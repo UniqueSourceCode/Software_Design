@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
 /**
  * An implementation of Graph with an adjacency list representation.
  * NOTE: you should NOT add more member variables to this class.
@@ -63,7 +62,7 @@ public class AdjacencyListGraph<N extends Comparable<N>> implements Graph<N> {
 
     @Override
     public boolean addEdge(@NotNull N source, @NotNull N target) {
-        if (source.equals(target)) {
+        if (source == null || target == null || source.equals(target)) {
             return false;
         }
         

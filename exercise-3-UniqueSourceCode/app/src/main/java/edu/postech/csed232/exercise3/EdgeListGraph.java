@@ -49,7 +49,7 @@ public class EdgeListGraph<N extends Comparable<N>> implements Graph<N> {
             return false;
         }
         vertices.remove(vertex);
-        edges.removeIf(edge -> edge.source().equals(vertex) || edge.target().equals(vertex));
+        edges.removeIf(edge -> vertex != null && (vertex.equals(edge.source()) || vertex.equals(edge.target())));
         return true;
     }
 
@@ -60,7 +60,7 @@ public class EdgeListGraph<N extends Comparable<N>> implements Graph<N> {
 
     @Override
     public boolean addEdge(@NotNull N source, @NotNull N target) {
-        if (source.equals(target)) {
+        if (source == null || target == null || source.equals(target)) {
             return false;
         }
         if (containsEdge(source, target)) {
@@ -86,7 +86,7 @@ public class EdgeListGraph<N extends Comparable<N>> implements Graph<N> {
     public @NotNull Set<N> getNeighborhood(N vertex) {
         Set<N> neighborhood = new HashSet<>();
         for (var edge : edges) {
-            if (edge.source().equals(vertex)) {
+            if (vertex != null && (vertex.equals(edge.source()) || vertex.equals(edge.target()))) {
                 neighborhood.add(edge.target());
             }
         }

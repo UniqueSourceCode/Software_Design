@@ -8,6 +8,8 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+
 /**
  * Shared black-box contract tests for Graph implementations.
  *
@@ -107,7 +109,7 @@ abstract public class AbstractGraphTest<N extends Comparable<N>, G extends Graph
         graph.addEdge(v1, v2);
         graph.addEdge(v1, v4);
 
-        assertEquals(Set.of(new Edge(v1, v2), new Edge(v1, v4)), graph.getEdges());
+        assertEquals(Set.of(new Edge<>(v1, v2), new Edge<>(v1, v4)), graph.getEdges());
     }
 
 
