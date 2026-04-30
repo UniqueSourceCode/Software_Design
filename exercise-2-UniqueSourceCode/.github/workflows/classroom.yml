@@ -1,0 +1,66 @@
+name: Autograding Tests
+on:
+  - push
+  - workflow_dispatch
+  - repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: AbstractNumberTranslatorTest
+        id: abstract-number-translator
+        uses: github-education-resources/autograding-command-grader@v1
+        with:
+          test-name: AbstractNumberTranslatorTest
+          setup-command: ""
+          command: ./gradlew test --tests AbstractNumberTranslatorTest
+          timeout: 10
+          max-score: 2
+
+      - name: EnglishNumberTranslatorTest
+        id: english-number-translator
+        uses: github-education-resources/autograding-command-grader@v1
+        with:
+          test-name: EnglishNumberTranslatorTest
+          setup-command: ""
+          command: ./gradlew test --tests EnglishNumberTranslatorTest
+          timeout: 10
+          max-score: 2
+
+      - name: KoreanNumberTranslatorTest
+        id: korean-number-translator
+        uses: github-education-resources/autograding-command-grader@v1
+        with:
+          test-name: KoreanNumberTranslatorTest
+          setup-command: ""
+          command: ./gradlew test --tests KoreanNumberTranslatorTest
+          max-score: 2
+
+      - name: HopingRabbitsGameTest
+        id: hoping-rabbits-game
+        uses: github-education-resources/autograding-command-grader@v1
+        with:
+          test-name: HopingRabbitsGameTest
+          setup-command: ""
+          command: ./gradlew test --tests HopingRabbitsGameTest
+          timeout: 10
+          max-score: 4
+
+      - name: Autograding Reporter
+        uses: github-education-resources/autograding-grading-reporter@v1
+        env:
+          ABSTRACT-NUMBER-TRANSLATOR_RESULTS: "${{steps.abstract-number-translator.outputs.result}}"
+          ENGLISH-NUMBER-TRANSLATOR_RESULTS: "${{steps.english-number-translator.outputs.result}}"
+          HOPING-RABBITS-GAME_RESULTS: "${{steps.hoping-rabbits-game.outputs.result}}"
+          KOREAN-NUMBER-TRANSLATOR_RESULTS: "${{steps.korean-number-translator.outputs.result}}"
+        with:
+          runners: abstract-number-translator,english-number-translator,hoping-rabbits-game,korean-number-translator
